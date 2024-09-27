@@ -41,7 +41,28 @@
     <div id="results"></div>
 
     <script>
-        // We'll add JavaScript here in the next steps
+        document.getElementById('video-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const url = document.getElementById('video-url').value;
+            const results = document.getElementById('results');
+            results.innerHTML = 'Loading...';
+
+            try {
+                const response = await fetch('https://your-repl-url.repl.co/api/summarize', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({url})
+                });
+                const data = await response.json();
+                if (data.error) {
+                    results.innerHTML = `Error: ${data.error}`;
+                } else {
+                    results.innerHTML = data.summary;
+                }
+            } catch (error) {
+                results.innerHTML = `Error: ${error.message}`;
+            }
+        });
     </script>
 </body>
 </html>
